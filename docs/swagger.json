@@ -1,0 +1,1307 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Api for CineLog",
+        "title": "Swagger CineLog Swagger API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/analytics": {
+            "get": {
+                "description": "Get user's watch statistics and analytics",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Analytics"
+                ],
+                "summary": "Get analytics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.AnalyticsResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Create user account",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.UserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/collection": {
+            "get": {
+                "description": "Get the user's physical media collection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Physical Collection"
+                ],
+                "summary": "Get physical collection",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.PhysicalMediaResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/discovers": {
+            "get": {
+                "description": "Get a list of movies based on filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Discover movies",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Genre ID",
+                        "name": "genre",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Minimum rating",
+                        "name": "minimum_rating",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Release date less than (YYYY-MM-DD)",
+                        "name": "release_date_lt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Release date greater than (YYYY-MM-DD)",
+                        "name": "release_date_gt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language (e.g., en-US)",
+                        "name": "translation",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.DiscoverResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/discovers/tv": {
+            "get": {
+                "description": "Get a list of TV shows based on filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TV Shows"
+                ],
+                "summary": "Discover TV shows",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Genre ID",
+                        "name": "genre",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "description": "Minimum rating",
+                        "name": "minimum_rating",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "First air date less than (YYYY-MM-DD)",
+                        "name": "release_date_lt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "First air date greater than (YYYY-MM-DD)",
+                        "name": "release_date_gt",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language (e.g., en-US)",
+                        "name": "translation",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.DiscoverResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/history": {
+            "get": {
+                "description": "Get the user's watch history",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Watched Media"
+                ],
+                "summary": "Get watch history",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.WatchedMediaResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/media/increment-watch": {
+            "post": {
+                "description": "Increment the watch count for a media item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Watched Media"
+                ],
+                "summary": "Increment watch count",
+                "parameters": [
+                    {
+                        "description": "Watched media request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.WatchedMediaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.WatchedMediaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/media/physical": {
+            "post": {
+                "description": "Add a physical media item to the collection (Blu-ray, DVD, etc.)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Physical Collection"
+                ],
+                "summary": "Add physical media",
+                "parameters": [
+                    {
+                        "description": "Physical media request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhysicalMediaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhysicalMediaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/media/physical/{id}": {
+            "get": {
+                "description": "Get details of a specific physical media item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Physical Collection"
+                ],
+                "summary": "Get physical media by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Physical media ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhysicalMediaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update details of a physical media item",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Physical Collection"
+                ],
+                "summary": "Update physical media",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Physical media ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Physical media request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhysicalMediaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhysicalMediaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove a physical media item from the collection",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Physical Collection"
+                ],
+                "summary": "Delete physical media",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Physical media ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/media/watched": {
+            "post": {
+                "description": "Mark a movie, TV show, or episode as watched or unwatched",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Watched Media"
+                ],
+                "summary": "Mark media as watched",
+                "parameters": [
+                    {
+                        "description": "Watched media request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.WatchedMediaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.WatchedMediaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/movie/{id}": {
+            "get": {
+                "description": "Get detailed information about a specific movie",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Get movie details",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Movie ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language (e.g., en-US)",
+                        "name": "language",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.MediaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/movie/{id}/cast": {
+            "get": {
+                "description": "Get the cast and crew of a specific movie",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Get movie cast",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Movie ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language (e.g., en-US)",
+                        "name": "language",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CastResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tv/{id}": {
+            "get": {
+                "description": "Get detailed information about a specific TV show",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TV Shows"
+                ],
+                "summary": "Get TV show details",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "TV Show ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language (e.g., en-US)",
+                        "name": "language",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.MediaResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tv/{id}/cast": {
+            "get": {
+                "description": "Get the cast and crew of a specific TV show",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TV Shows"
+                ],
+                "summary": "Get TV show cast",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "TV Show ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language (e.g., en-US)",
+                        "name": "language",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.CastResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tv/{id}/season/{season}": {
+            "get": {
+                "description": "Get detailed information about a specific season of a TV show",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TV Shows"
+                ],
+                "summary": "Get season details",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "TV Show ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Season number",
+                        "name": "season",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Language (e.g., en-US)",
+                        "name": "language",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.RoleResponse": {
+            "type": "string",
+            "enum": [
+                "admin",
+                "user"
+            ],
+            "x-enum-varnames": [
+                "UserRoleAdmin",
+                "UserRoleUser"
+            ]
+        },
+        "controllers.UserPreferencesResponse": {
+            "type": "object",
+            "properties": {
+                "default_view": {
+                    "type": "string"
+                },
+                "show_adult_content": {
+                    "type": "boolean"
+                },
+                "theme": {
+                    "type": "string"
+                },
+                "tmdb_language": {
+                    "type": "string"
+                },
+                "ui_language": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.UserResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "preferences": {
+                    "$ref": "#/definitions/controllers.UserPreferencesResponse"
+                },
+                "role": {
+                    "$ref": "#/definitions/controllers.RoleResponse"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.AnalyticsResponse": {
+            "type": "object",
+            "properties": {
+                "most_watched_media": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.WatchedMediaResponse"
+                    }
+                },
+                "physical_by_format": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "total_episodes": {
+                    "type": "integer"
+                },
+                "total_movies": {
+                    "type": "integer"
+                },
+                "total_physical": {
+                    "type": "integer"
+                },
+                "total_tv_shows": {
+                    "type": "integer"
+                },
+                "total_watched": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.CastResponse": {
+            "type": "object",
+            "properties": {
+                "character": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "order": {
+                    "type": "integer"
+                },
+                "profile_path": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.DiscoverResponse": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer"
+                },
+                "results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.MediaResponse"
+                    }
+                },
+                "total_pages": {
+                    "type": "integer"
+                },
+                "total_results": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.MediaResponse": {
+            "type": "object",
+            "properties": {
+                "backdrop": {
+                    "type": "string"
+                },
+                "cast": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.CastResponse"
+                    }
+                },
+                "genre": {
+                    "$ref": "#/definitions/tmdb.GenreItem"
+                },
+                "genres": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/tmdb.GenreItem"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "number_of_episodes": {
+                    "type": "integer"
+                },
+                "number_of_seasons": {
+                    "type": "integer"
+                },
+                "overview": {
+                    "type": "string"
+                },
+                "poster": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "release_date": {
+                    "type": "string"
+                },
+                "runtime": {
+                    "type": "integer"
+                },
+                "seasons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.SeasonResponse"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/dto.MediaType"
+                },
+                "year": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.MediaType": {
+            "type": "string",
+            "enum": [
+                "movie",
+                "tv",
+                "episode"
+            ],
+            "x-enum-varnames": [
+                "Movie",
+                "TV",
+                "Episode"
+            ]
+        },
+        "dto.PhysicalMediaRequest": {
+            "type": "object",
+            "properties": {
+                "edition": {
+                    "type": "string"
+                },
+                "format": {
+                    "type": "string"
+                },
+                "mark_as_watched": {
+                    "description": "Optionnel: marquer comme vu lors de l'ajout",
+                    "type": "boolean"
+                },
+                "media_type": {
+                    "description": "\"movie\", \"tv\"",
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "season_number": {
+                    "type": "integer"
+                },
+                "store": {
+                    "type": "string"
+                },
+                "tmdb_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.PhysicalMediaResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "edition": {
+                    "type": "string"
+                },
+                "format": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "media_type": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "purchase_at": {
+                    "type": "string"
+                },
+                "season_number": {
+                    "type": "integer"
+                },
+                "store": {
+                    "type": "string"
+                },
+                "tmdb_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.SeasonResponse": {
+            "type": "object",
+            "properties": {
+                "air_date": {
+                    "type": "string"
+                },
+                "episode_count": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "overview": {
+                    "type": "string"
+                },
+                "poster_path": {
+                    "type": "string"
+                },
+                "season_number": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.WatchedMediaRequest": {
+            "type": "object",
+            "properties": {
+                "episode_number": {
+                    "type": "integer"
+                },
+                "media_type": {
+                    "description": "\"movie\", \"tv\", \"episode\"",
+                    "type": "string"
+                },
+                "season_number": {
+                    "type": "integer"
+                },
+                "tmdb_id": {
+                    "type": "integer"
+                },
+                "watched": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "dto.WatchedMediaResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "episode_number": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "media_type": {
+                    "type": "string"
+                },
+                "season_number": {
+                    "type": "integer"
+                },
+                "tmdb_id": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "watch_count": {
+                    "type": "integer"
+                },
+                "watched": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "tmdb.GenreItem": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
