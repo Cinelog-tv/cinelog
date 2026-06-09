@@ -19,11 +19,14 @@ type CacheConfig struct {
 type CACHE_TYPE string
 
 const (
+	NO_CACHE_TYPE     CACHE_TYPE = "NO_CACHE"
 	MEMORY_CACHE_TYPE CACHE_TYPE = "MEMORY"
 )
 
 func NewCache(cacheType CACHE_TYPE, config *CacheConfig) (Cache, error) {
 	switch cacheType {
+	case NO_CACHE_TYPE:
+		return NewNoCache(), nil
 	case MEMORY_CACHE_TYPE:
 		return NewMemoryCache(config.DefaultExpiration, config.CleanupInterval), nil
 	default:
