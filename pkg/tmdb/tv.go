@@ -1,6 +1,20 @@
 package tmdb
 
-type TVDetails struct {
+import (
+	"fmt"
+	"net/url"
+	"strings"
+)
+
+const (
+	TV_DETAILS_ENDPOINT = "/tv/"
+)
+
+const (
+	TV_CACHE_NAME = "tv-%d-%s"
+)
+
+type TMDBTVDetails struct {
 	ID               int           `json:"id"`
 	Name             string        `json:"name"`
 	OriginalName     string        `json:"original_name"`
@@ -78,4 +92,53 @@ type TMDBEpisode struct {
 	VoteAverage   float64  `json:"vote_average"`
 	VoteCount     int      `json:"vote_count"`
 	Runtime       int      `json:"runtime"`
+}
+
+type TMDBTVParameters struct {
+	TVID     int    `json:"tv_id"`
+	Language string `json:"language"`
+}
+
+func (client *TMDBClient) GetTVDetail(parameters *TMDBTVParameters) (*TMDBTVDetails, error) {
+
+	if parameters == nil {
+		return nil, fmt.Errorf("parameters.MovieID is required")
+	}
+
+	var tvID int
+	if tvID = parameters.TVID; tvID <= 0 {
+		return nil, fmt.Errorf("MovieID must be positive integer")
+	}
+
+	queryParams := url.Values{}
+
+	var language string
+	if v := strings.TrimSpace(parameters.Language); v != "" {
+		language = parameters.Language
+	} else {
+		language = "en"
+	}
+
+	cacheKey := fmt.Sprintf(TV_CACHE_NAME, tvID, language)
+
+	if tv, found := client.config.Cache.Get(cacheKey); found {
+		return tv.(*TMDBTVDetails), nil
+	}
+
+	queryParams.Add("language", language)
+
+	req, err := client.newRequest("GET", TV_DETAILS_ENDPOINT, &queryParams, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var tvDetails TMDBTVDetails
+	if err := client.do(req, &tvDetails); err != nil {
+		return nil, err
+	}
+
+	client.config.Cache.Set(cacheKey, &tvDetails, 0)
+
+	return &tvDetails, nil
 }
