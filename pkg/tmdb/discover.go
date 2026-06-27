@@ -61,16 +61,6 @@ func (i TMDBDiscoverItem) GetYear() int {
 	}
 }
 
-func (i TMDBDiscoverItem) GetTitle() string {
-	switch i.MediaType {
-	case TMDB_Movie:
-		return i.Title
-	case TMDB_TV:
-		return i.Name
-	}
-	return ""
-}
-
 type TMDBTVDiscoverResult struct {
 	Page         int          `json:"page"`
 	Results      []TMDBTVItem `json:"results"`
