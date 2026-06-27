@@ -1,12 +1,17 @@
 package tmdb
 
 import (
+	"fmt"
 	"net/url"
-	"strconv"
+	"strings"
 )
 
 const (
 	MOVIE_DETAILS_ENDPOINT = "/movie/"
+)
+
+const (
+	MOVIE_CACHE_KEY = "movie-%d-%s"
 )
 
 type TMDBMovieDetails struct {
@@ -51,16 +56,37 @@ type TMDBMovieTranslationData struct {
 	Tagline  string `json:"tagline"`
 }
 
-func (client *TMDBClient) GetMovieDetails(movieID int, language string) (*TMDBMovieDetails, error) {
-	if language == "" {
-		language = "en-US"
+type TMDBMovieParameters struct {
+	MovieID  int    `json:"movie_id"`
+	Language string `json:"language"`
+}
+
+func (client *TMDBClient) GetMovieDetails(parameters *TMDBMovieParameters) (*TMDBMovieDetails, error) {
+
+	if parameters == nil {
+		return nil, fmt.Errorf("parameters.MovieID is required")
 	}
 
-	if movie, found := client.config.Cache.Get("movie-" + strconv.Itoa(movieID) + language); found {
-		return movie.(*TMDBMovieDetails), nil
+	var movieID int
+	if movieID = parameters.MovieID; movieID <= 0 {
+		return nil, fmt.Errorf("MovieID must be positive integer")
 	}
 
 	queryParams := url.Values{}
+
+	var language string
+	if v := strings.TrimSpace(parameters.Language); v != "" {
+		language = parameters.Language
+	} else {
+		language = "en"
+	}
+
+	cacheKey := fmt.Sprintf(MOVIE_CACHE_KEY, movieID, language)
+
+	if movie, found := client.config.Cache.Get(cacheKey); found {
+		return movie.(*TMDBMovieDetails), nil
+	}
+
 	queryParams.Add("language", language)
 
 	req, err := client.newRequest("GET", MOVIE_DETAILS_ENDPOINT, &queryParams, nil)
@@ -74,7 +100,7 @@ func (client *TMDBClient) GetMovieDetails(movieID int, language string) (*TMDBMo
 		return nil, err
 	}
 
-	client.config.Cache.Set("movie-"+strconv.Itoa(movieID)+language, &movieDetails, 0)
+	client.config.Cache.Set(cacheKey, &movieDetails, 0)
 
 	return &movieDetails, nil
 }
